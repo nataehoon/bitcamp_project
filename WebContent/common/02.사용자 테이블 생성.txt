@@ -1,0 +1,496 @@
+create sequence edu_program_seq
+increment by 1 start with 1;
+
+create table edu_program (
+   calno number primary key,
+   tid varchar2(30),
+   class_id number,
+   title varchar2(100),
+   content varchar2(255),
+   image varchar2(255),
+   regdate date default sysdate,
+   readhit number,
+   begindate date,
+   enddate date,
+   remark varchar2(255)
+      );
+
+-- 직원 등록 테이블
+-- tid 기본키에 적용할 시퀀스 생성
+create sequence employees_seq
+increment by 1 start with 1;
+
+create table employees(
+   tid varchar2(30) primary key,
+   class_id number,
+   name varchar2(30),
+   join_date date default sysdate,
+   salary number not null,
+   image varchar2(255),
+   birth date not null,
+   hp varchar2(30) not null,
+   address1 varchar2(255) not null,
+   address2 varchar2(255) not null,
+   gender varchar2(30) check (gender in ('남','여')) not null,
+   responsibilities varchar2(30) check (responsibilities in ('직원','원장')),
+   password varchar2(30) not null,
+   submit varchar2(30) check (submit in ('승인','미승인','보류')),
+   subject_code number,
+   remark varchar2(255),
+   email varchar2(100)
+       );
+
+-- 시간표 테이블
+-- time_id 기본키에 적용할 시퀀스 생성
+create sequence timetable_seq
+increment by 1 start with 1;
+
+create table timetable(
+   time_id number primary key,
+   subject_code number,
+   class_id number,
+   time varchar2(100),
+   day varchar2(100)  check (day in('월','화','수','목','금','토','일')),
+   remark varchar2(255)
+   );
+
+-- 과목 테이블
+-- subject_code 기본키에 적용할 시퀀스 생성
+create sequence subject_seq
+increment by 1 start with 1;
+
+create table subject(
+   subject_code number primary key,
+   subject varchar2(30),
+   tid varchar2(30),
+   remark varchar2(255)
+    );
+  
+-- 대기순번(상담예약) 테이블
+-- rid 기본키에 적용할 시퀀스 생성
+create sequence rid_seq
+increment by 1 start with 1;
+
+create table reservation(
+   rid number primary key,
+   tid varchar2(30),
+   textarea varchar2(255),
+   status varchar2(30) check(status in ('대기','완료','취소')),
+   res_date date default sysdate,
+   reg_date date default sysdate,
+   name varchar2(30),
+   hp varchar2(100),
+   remark varchar2(255)
+   );
+  
+-- 원생 등록 테이블
+-- sid 기본키에 적용할 시퀀스 생성
+create sequence sid_seq
+increment by 1 start with 1;
+
+create table student(
+   sid number primary key,
+   class_id number,
+   name varchar2(30),
+   hp varchar2(100),
+   birth date,
+   address1 varchar2(255) not null,
+   address2 varchar2(255) not null,
+   gender varchar2(30) check (gender in ('남','여')),
+   regdate date default sysdate,
+   textarea varchar2(255),
+   image varchar2(255),
+   remark varchar2(255)
+     );
+   
+
+-- 원생 원비 관리 테이블
+-- payno 기본키에 적용할 시퀀스 생성
+create sequence payno_seq
+increment by 1 start with 1;
+
+create table stu_fee(
+   payno number primary key,
+   sid number,
+  month varchar2(30),
+   unpaid number,
+   remark varchar2(255)
+     );
+  
+-- 원생 관리 테이블
+-- stno 기본키에 적용할 시퀀스 생성
+create sequence stno_seq
+increment by 1 start with 1;
+
+create table st_manage( 
+   stno number primary key,
+   sid number,
+   poop number,
+   healthy varchar2(100) check (healthy in ('좋음','보통','나쁨')),
+   medicine_id number,
+   attendance varchar2(30) check (attendance in ('출','결','휴','외','조')),
+   regdate date default sysdate,
+   sleep varchar2(100),
+   condition varchar2(255) check (condition in ('좋음','보통','나쁨')),
+   meal varchar2(255) check (meal in ('정량','초과','미달')),
+   height varchar2(30),
+   weight varchar2(30),
+   remark varchar2(255)
+     );
+
+-- 보호자 등록
+-- pid 기본키에 적용할 시퀀스 생성
+create sequence pid_seq 
+increment by 1 start with 1;
+
+create table parents(
+   pid varchar2(30) primary key,
+   sid number,
+   name varchar2(30),
+   hp varchar2(100),
+   address1 varchar2(255) not null,
+   address2 varchar2(255) not null,
+   gender varchar2(30) not null,
+   relationship varchar2(30) not null,
+   submit varchar2(30),
+   birth date not null,
+   password varchar2(30) not null,
+   email varchar2(100),
+   image varchar2(255),
+   childid number,
+   childid2 number,
+   remark varchar2(255),
+   zipcode number not null
+   );
+
+--귀가동의서
+--hono 기본키에 적용할 시퀀스 생성
+create sequence hono_seq
+increment by 1 start with 1;
+
+create table re_home(
+   hono number primary key,
+   pid varchar2(30),
+   tid varchar2(30),
+   regdate date default sysdate,
+   method varchar2(30) check(method in('대중교통','도보','자차')),
+   relationship varchar2(30),
+   hp varchar2(100),
+   ehp varchar2(100),
+   checks varchar2(30) check(checks in('읽음','안읽음')),
+   remark varchar2(255)
+   );
+
+-- 투약의뢰서
+-- meno 기본키에 적용할 시퀀스 생성
+create sequence meno_seq 
+increment by 1 start with 1;
+
+create table medicine(
+   meno number primary key,
+   pid varchar2(30),
+   tid varchar2(30),
+   regdate date default sysdate,
+   category varchar2(100),
+   amount varchar2(100) not null,
+   reps number not null,
+   hour varchar2(100) not null,
+   storagemethod varchar2(255) check(storagemethod in('상온','냉장','냉동')) not null,
+   textarea varchar2(255),
+   checks varchar2(30) check(checks in('읽음','안읽음')),
+   remark varchar2(255)
+   );
+
+-- 식단표
+
+create table diet(
+   regdate date primary key,
+   bf varchar2(30),
+   lc varchar2(30),
+   dn varchar2(30),
+   ds varchar2(30),
+   remark varchar2(255)
+   );
+
+--매출
+
+create table sales_table(
+   regdate date primary key,
+   sales number,
+   return number,
+   category varchar2(30),
+   remark varchar2(100)
+   );
+
+
+--직원 관리
+--emp_mno 기본키에 적용할 시퀀스 생성
+create sequence emp_mno_seq
+increment by 1 start with 1;
+
+create table emp_manage(
+    emp_mno number primary key,
+    tid varchar2(30),
+    attendance varchar2(30) check(attendance in('출석','결석','조퇴','휴무')) not null,
+    regdate date default sysdate,
+    remark varchar2(255)
+    );
+
+--특별활동 
+--actino 기본키에 적용할 시퀀스 생성
+create sequence actino_seq
+increment by 1 start with 1;
+
+create table activity(
+actino number primary key,
+subject_code number,
+title varchar2(100),
+content varchar2(255),
+image varchar2(255),
+regdate date default sysdate,
+remark varchar2(255),
+tid varchar2(30),
+class_id number,
+readhit number
+);
+
+--특별활동 코멘트
+--activity_cmid 기본키에 적용할 sequence 생성
+create sequence activity_cmid_seq 
+increment by 1 start with 1;
+
+create table activity_comment(
+activity_cmid number primary key,
+actino number,
+content varchar2(255),
+regdate date default sysdate,
+remark varchar2(255),
+tid varchar2(30),
+pid varchar2(30)
+);
+
+
+--학급
+--class_id 기본키에 적용할 시퀀스 생성
+create sequence class_id_seq
+increment by 1 start with 1;
+
+create table class(
+   class_id number primary key,
+   class_name varchar2(30) unique,
+   tid varchar2(30),
+   remark varchar2(255)
+   );
+
+--공지사항 
+-- notino 기본키에 적용할 시퀀스 생성
+create sequence notino_seq 
+increment by 1 start with 1;
+
+create table notice_board(
+   notino number primary key ,
+   tid varchar2(30),
+   title varchar2(100),
+   content varchar2(255),
+   files varchar2(100),
+   regdate date default sysdate,
+   class_id number,
+   readhit number,
+   remark varchar2(255)
+   );
+
+--직원간 게시판
+-- empno 기본키에 적용할 시퀀스 생성
+create sequence empno_seq
+increment by 1 start with 1;
+
+create table emplo_board(
+   empno number primary key,
+   tid varchar2(30),
+   content varchar2(30) not null,
+   files varchar2(100),
+   regdate date default sysdate,
+   readhit number,
+   remark varchar2(255)
+   );
+
+--알림장 코멘트 테이블
+-- id 기본키에 적용할 시퀀스 생성
+create sequence daily_cm_seq
+increment by 1 start with 1;
+
+create table noti_no_comment(
+   id number primary key,
+   dailyno number,
+   pid varchar2(30),
+   class_id number,
+   send number,
+   content varchar2(255),
+   regdate date default sysdate,
+   checks varchar2(30) check (checks in ('읽음', '안읽음')),
+   remark varchar2(255)
+   );
+
+--알림장 테이블
+-- dailyno 기본키에 적용할 시퀀스 생성
+create sequence dailyno_seq
+increment by 1 start with 1;
+
+create table noti_no_board(
+    dailyno number primary key,
+    class_id number,
+    pid varchar2(30),
+    title varchar2(100),
+    contents varchar2(255),
+    image varchar2(255),
+    regdate date default sysdate,
+    checks varchar2(30) check (checks in ('읽음', '안읽음')),
+    send number,
+    remark varchar2(255)
+    );
+select count(*) from user_tables;
+select count(*) from user_sequences;
+
+--일정표
+alter table edu_program
+add constraint edu_program_tid_fk
+foreign key (tid) references employees(tid) on delete cascade;
+
+alter table edu_program
+add constraint edu_program_class_id_fk
+foreign key (class_id) references class(class_id) on delete cascade;
+
+--직원 등록 테이블
+alter table employees add constraint employees_class_id_fk foreign key (class_id) references class(class_id) on delete set null;
+
+alter table employees add constraint employees_subject_code_fk foreign key (subject_code) references subject(subject_code) on delete set null;
+
+--시간표 테이블
+alter table timetable add constraint timetable_class_id_fk foreign key (class_id) references class(class_id) on delete cascade;
+
+alter table timetable add constraint timetable_subject_code_fk foreign key (subject_code) references subject(subject_code) on delete cascade;
+
+--직원관리 
+alter table emp_manage add constraint emp_manage_tid_fk foreign key (tid) references employees(tid) on delete set null;
+
+--학급
+alter table class add constraint class_tid_fk foreign key (tid) references employees(tid) on delete set null;
+
+
+--대기순번(상담예약)
+alter table reservation
+add constraint reservation_tid_fk
+foreign key (tid) references employees (tid) on delete set null;
+
+--원생 등록
+alter table student
+add constraint student_class_id_fk
+foreign key (class_id) references class (class_id) on delete set null;
+
+--원생 원비 관리
+alter table stu_fee
+add constraint stu_fee_sid_fk
+foreign key (sid) references student (sid) on delete set null;
+
+--원생 관리
+alter table st_manage
+add constraint st_manage_sid_fk
+foreign key (sid) references student (sid) on delete cascade;
+
+--보호자 등록
+alter table parents
+add constraint parents_sid_fk
+foreign key (sid) references student (sid) on delete set null;
+
+alter table parents
+add constraint parents_childid_fk
+foreign key (childid) references student (sid) on delete set null;
+
+alter table parents
+add constraint parents_childid2_fk
+foreign key (childid2) references student (sid) on delete set null;
+
+--귀가동의서
+alter table re_home
+add constraint re_home_pid_fk
+foreign key (pid) references parents (pid) on delete set null;
+
+alter table re_home
+add constraint re_home_tid_fk
+foreign key (tid) references employees (tid) on delete set null;
+--투약의뢰서
+alter table medicine
+add constraint medicine_pid_fk
+foreign key (pid) references parents (pid) on delete set null;
+
+alter table medicine
+add constraint medicine_tid_fk
+foreign key (tid) references employees (tid) on delete set null;
+
+--공지사항 comment
+--ALTER TABLE notice_comment
+--ADD CONSTRAINT notice_comment_tid_fk
+--FOREIGN KEY (tid) REFERENCES employees (tid) on delete set null;
+
+--공지사항
+ALTER TABLE notice_board
+ADD CONSTRAINT notice_board_tid_fk 
+FOREIGN KEY(tid) REFERENCES employees(tid)on delete set null;
+
+
+ALTER TABLE notice_board
+ADD CONSTRAINT notice_board_class_id_fk 
+FOREIGN KEY(class_id) REFERENCES class(class_id)on delete cascade;
+
+ALTER TABLE emplo_board
+ADD CONSTRAINT emplo_board_tid_fk 
+FOREIGN KEY(tid) REFERENCES employees(tid) on delete cascade; 
+
+
+--알림장
+ALTER TABLE noti_no_comment
+ADD CONSTRAINT noti_no_comment_class_id_fk 
+FOREIGN KEY(class_id) REFERENCES class(class_id)on delete cascade; 
+
+ALTER TABLE noti_no_comment
+ADD CONSTRAINT noti_no_comment_pid_fk
+FOREIGN KEY(pid) REFERENCES parents (pid) on delete set null;
+
+ALTER TABLE noti_no_comment
+ADD CONSTRAINT noti_no_comment_dailyno_fk
+FOREIGN KEY(dailyno) REFERENCES noti_no_board(dailyno) on delete cascade;
+
+--
+ALTER TABLE noti_no_board
+ADD CONSTRAINT noti_no_board_class_id_fk 
+FOREIGN KEY(class_id) REFERENCES class(class_id) on delete cascade; 
+
+ALTER TABLE noti_no_board
+ADD CONSTRAINT noti_no_board_pid_fk
+FOREIGN KEY(pid) REFERENCES parents (pid) on delete set null;
+
+-- 특별활동
+alter table activity 
+add constraint activity_subject_code_fk 
+foreign key(subject_code) references subject(subject_code) on delete set null;
+
+alter table activity
+add constraint activity_tid_fk
+foreign key(tid) references employees(tid) on delete set null;
+
+alter table activity
+add constraint activity_class_id_fk
+foreign key(class_id) references class(class_id) on delete set null;
+
+--특별활동 댓글
+alter table activity_comment
+add constraint activity_comment_actino_fk
+foreign key(actino) references activity(actino) on delete cascade;
+
+alter table activity_comment
+add constraint activity_comment_tid_fk
+foreign key(tid) references employees(tid) on delete set null;
+
+alter table activity_comment
+add constraint activity_comment_pid_fk
+foreign key(pid) references parents(pid) on delete set null;
