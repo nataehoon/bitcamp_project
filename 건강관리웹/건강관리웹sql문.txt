@@ -1,0 +1,214 @@
+--상담테이블 시퀀스
+create sequence adviceboard_seq
+start with 1 increment by 1;
+
+--체형관리 테이블 시퀀스
+create sequence posture_seq
+start with 1 increment by 1;
+
+--건강기록테이블 시퀀스
+create sequence healthchart_seq
+start with 1 increment by 1;
+
+--운동일지테이블 시퀀스
+create sequence execiselog_seq
+start with 1 increment by 1;
+
+--게시판테이블 시퀀스
+create sequence board_seq
+start with 1 increment by 1;
+
+--댓글테이블 시퀀스
+create sequence comment_seq
+start with 1 increment by 1;
+
+--공지사항테이블 시퀀스
+create sequence noticeboard_seq
+start with 1 increment by 1;
+
+--헬스장정보테이블 시퀀스
+create sequence fitness_seq
+start with 1 increment by 1;
+
+--병원정보테이블 시퀀스
+create sequence hospital_seq
+start with 1 increment by 1;
+
+CREATE TABLE members (
+	id	varchar2(30)		primary key,
+	passward	varchar2(30)		NULL,
+	name	varchar2(30)		NULL,
+	age	number		NULL,
+	hp	varchar2(30)		NULL,
+	nikname	varchar2(30)		NULL,
+	email	varchar2(30)		NULL,
+	image	varchar2(100)		NULL,
+	zipcode	number		NULL,
+	address	varchar2(50)		NULL,
+	address2	varchar2(50)		NULL,
+	mehi	varchar2(30)		NULL,
+	workpattern	varchar2(30)		NULL,
+	weight	number		NULL,
+	height	number		NULL,
+	postop	varchar2(30)		NULL,
+	memo	varchar2(255)		NULL,
+	remark	varchar2(255)		NULL
+);
+
+CREATE TABLE adviceboard (
+	avno	number		primary key,
+	id	varchar2(30)		NOT NULL,
+	pono	number		NOT NULL,
+	healthno	number		NOT NULL,
+	logno	number		NOT NULL,
+	title	varchar2(50)		NULL,
+	content	varchar2(255)		NULL,
+	image	varchar2(100)		NULL,
+	remark	varchar2(255)		NULL
+);
+
+CREATE TABLE healthchart (
+	healthno	number		primary key,
+	id	varchar2(30)		NOT NULL,
+	height	varchar2(30)		NULL,
+	weight	varchar2(30)		NULL,
+	fat	varchar2(30)		NULL,
+	muscle	varchar2(30)		NULL,
+	hdl	varchar2(30)		NULL,
+	ldl	varchar2(30)		NULL,
+	totalco	varchar2(30)		NULL,
+	ast	varchar2(30)		NULL,
+	alt	varchar2(30)		NULL,
+	ggt	varchar2(30)		NULL,
+	bun	varchar2(30)		NULL,
+	creatin	varchar2(30)		NULL
+);
+
+CREATE TABLE posture (
+	pono	number		primary key,
+	id	varchar2(30)		NOT NULL,
+	regdate	varcahr2(30)		NULL,
+	image1	varchar2(100)		NULL,
+	image2	varchar2(100)		NULL,
+	image3	varchar2(100)		NULL,
+	image4	varchar2(100)		NULL,
+	remark	varchar2(255)		NULL
+);
+
+CREATE TABLE exerciselog (
+	logno	number		primary key,
+	id	varchar2(30)		NOT NULL,
+	exdate	varchar2(30)		NULL,
+	loglist	varchar2(255)		NULL,
+	comment	varchar2(255)		NULL,
+	remark	varchar2(255)		NULL
+);
+
+
+CREATE TABLE board (
+	bono	number		primary key,
+	id	varchar2(30)		NOT NULL,
+	pono	number		NUL,
+	logno	number		NUL,
+	healthno	number		NUL,
+	cartegory	varchar2(30)	NOT NULL,
+	title	varchar2(50)		NULL,
+	content	varchar2(255)		NULL,
+	image	varchar2(100)		NULL,
+	regdate	varchar2(30)		NULL,
+	readhit	number		NULL,
+	recommend	number		NULL,
+	remark	varchar2(255)		NULL
+);
+
+CREATE TABLE hospital (
+	hosno	number		primary key,
+	name	varchar2(30)		NULL,
+	address	varchar2(100)		NULL,
+	xaxis	varchar2(50)		NULL,
+	yaxis	varchar2(50)		NULL,
+	remark	varchar2(255)		NULL
+);
+
+CREATE TABLE fitness (
+	fitno	number		primary key,
+	name	varchar2(30)		NULL,
+	address	varchar2(100)		NULL,
+	xaxis	varchar2(50)		NULL,
+	yaxis	varchar2(50)		NULL,
+	remark	varchar2(255)		NULL
+);
+
+CREATE TABLE comment (
+	cono	number		primary key,
+	bono	number		NOT NULL,
+	id	varchar2(30)		NOT NULL,
+	content	varchar2(255)		NULL,
+	id2	varchar2(30)		NULL,
+	regdate	varchar2(30)		NULL,
+	groupno	number		NULL,
+	depth	number		NULL,
+	remark	varchar2(255)		NULL
+);
+
+CREATE TABLE noticeboard (
+	notino	number		primary key,
+	title	varchar2(50)		NULL,
+	content	varchar2(255)		NULL,
+	image	varchar2(100)		NULL,
+	regdate	varchar2(30)		NULL,
+	readhit	number		NULL,
+	remark	varchar2(255)		NULL
+);
+
+alter table adviceboard
+add constraint adviceboard_id_fk
+foreign key (id) references members (id) on delete set null;
+
+alter table adviceboard
+add constraint adviceboard_pono_fk
+foreign key (pono) references posture (pono) on delete set null;
+
+alter table adviceboard
+add constraint adviceboard_healthno_fk
+foreign key (healthno) references healthchart (healthno) on delete set null;
+
+alter table adviceboard
+add constraint adviceboard_logno_fk
+foreign key (logno) references exerciselog (logno) on delete set null;
+
+alter table exerciselog
+add constraint exrciselog_id_fk
+foreign key (id) references exerciselog (id) on delete cascade;
+
+alter table healthchart
+add constraint healthchart_id_fk
+foreign key (id) references members (id) on delete cascade;
+
+alter table postrue
+add constraint posture_id_fk
+foreign key (id) references members (id) on delete cascade;
+
+alter table board
+add constraint board_id_fk
+foreign key (id) references members (id) on delete cascade;
+
+alter table board
+add constraint board_pono_fk
+foreign key (pono) references posture (pono) on delete set null;
+
+alter table board
+add constraint board_healthno_fk
+foreign key (healthno) references healthchart (healthno) on delete set null;
+
+alter table board
+add constraint board_logno_fk
+foreign key (logno) references exerciselog (logno) on delete set null;
+
+alter table comment
+add constraint commnet_pobono_fk
+foreign key (bono) references board (bono) on delete cascade;
+
+alter table commnet
+add constraint commnet_id_fk
+foreign key (id) references members (id) on delete cascade;
