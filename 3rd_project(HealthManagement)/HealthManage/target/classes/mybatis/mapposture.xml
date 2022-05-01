@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="MapperPosture">
+	<sql id="myselect">
+		select * from posture
+	</sql>
+	<select id="SelectDataList" resultType="MyPosture">
+		 select * from (select rownum as num, b.*
+		from (select a.* from posture a where id = 'areum41' order by regdate) b) order by num desc
+	</select>
+	<select id="SelectPk" resultType="MyPosture">
+		<include refid="myselect"/>
+		where pono = #{pono}
+	</select>
+	<select id="SelectByPk1" resultType="MyPosture">
+		select * from (select rownum as c, b.*
+		from (select a.* from posture a where id = #{id} order by regdate desc) b) where c = 1
+	</select>
+	<select id="SelectByPk2" resultType="MyPosture">
+		select * from (select rownum as c, b.*
+		from (select a.* from posture a where id = #{id} order by regdate desc) b) where c = 2
+	</select>
+	<insert id="InsertData" parameterType="MyPosture">
+		insert into posture(pono, id, regdate, image1, image2, image3, image4, remark, comments) 
+		values(posture_seq.nextval, #{id}, #{regdate}, #{image1}, #{image2}, #{image3}, #{image4}, null, #{comments})
+	</insert>
+	<select id="SelectByPk" resultType="MyPosture">
+		<include refid="myselect"/>
+		where posture = #{pono}
+	</select>
+	<update id="UpdateData" parameterType="MyPosture">
+		update posture set regdate=#{regdate}, image1=#{image1}, image2=#{image2}, image3=#{image3}, image4=#{image4}, remark=#{remark}, #{remark}, #{comments} where pono = #{pono}
+	</update>
+	<delete id="DeleteData" parameterType="int">
+		delete from posture where pono = #{pono}
+	</delete>
+	<select id="SelectTotalCount" resultType="int">
+		select count(*) from posture where id = #{id}
+	</select>
+</mapper>

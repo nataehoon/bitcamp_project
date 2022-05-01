@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="MapperHealthChart">
+	<sql id="myselect">
+		select * from healthchart
+	</sql>
+	<select id="SelectDataList" resultType="MyHealthChart">
+		<include refid="myselect"/>
+		where id = #{id} order by healthno desc
+	</select>
+	<insert id="InsertData" parameterType="MyHealthChart">
+		insert into healthchart values(healthchart_seq.nextval, #{id}, #{height}, #{weight}, #{fat}, #{muscle}, #{hdl}, #{ldl}, #{totalco}, #{ast}, #{alt}, #{ggt}, #{bun}, #{creatin}, #{fbs}, #{regdate}, #{systolic}, #{diastolic})
+	</insert>
+	<select id="SelectByPk" resultType="MyHealthChart">
+		<include refid="myselect"/>
+		where healthno = #{healthno}
+	</select>
+	<update id="UpdateData" parameterType="MyHealthChart">
+		update healthchart set height=#{height}, weight=#{weight}, fat=#{fat}, muscle=#{muscle}, hdl=#{hdl}, ldl=#{ldl}, totalco=#{totalco}, ast=#{ast}, alt=#{alt}, ggt=#{ggt}, bun=#{bun}, creatin=#{creatin}, fbs=#{fbs}, regdate=#{regdate}, systolic=#{systolic}, diastolic=#{diastolic} where healthno = #{healthno}
+	</update>
+	<delete id="DeleteData" parameterType="int">
+		delete from healthchart where healthno = #{healthno}
+	</delete>
+	<select id="SelectByPk1" resultType="MyHealthChart">
+		select * from (select rownum as c, b.*
+		from (select a.* from healthchart a where id = #{id} order by regdate desc) b) where c = 1
+	</select>
+	<select id="SelectByPk2" resultType="MyHealthChart">
+		select * from (select rownum as c, b.*
+		from (select a.* from healthchart a where id = #{id} order by regdate desc) b) where c = 2
+	</select>
+	<select id="SelectTotalCount" resultType="int">
+		select count(*) from healthchart where id = #{id}
+	</select>
+	<select id="SelectById" resultType="MyMember">
+		select * from members where id = #{id}
+	</select>
+</mapper>

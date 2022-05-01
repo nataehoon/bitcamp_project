@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="MapperFitness">
+	<sql id="myselect">
+		select * from fitness
+	</sql>
+	<select id="SelectDataList" resultType="MyFitness">
+		<include refid="myselect"/>
+		where gu = #{gu}
+		order by fitno
+	</select>
+	<select id="SelectByPk" resultType="MyFitness">
+		<include refid="myselect"/>
+		where fitno = #{fitno}
+	</select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="MapperExerciseLog">
+	<sql id="myselect">
+		select * from exerciselog
+	</sql>
+	<select id="SelectDataList" resultType="MyExerciseLog">
+		<include refid="myselect"/>
+		where id = #{id} order by regdate
+	</select>
+	<insert id="InsertData" parameterType="MyExerciseLog">
+		insert into exerciselog values(exerciselog_seq.nextval, #{id}, #{regdate}, #{loglist}, #{comments}, null, #{image})
+	</insert>
+	<select id="SelectByPk" resultType="MyExerciseLog">
+		<include refid="myselect"/>
+		where logno = #{logno}
+	</select>
+	<update id="UpdateData" parameterType="MyExerciselog">
+		update exerciselog set regdate=#{regdate}, loglist=#{loglist}, comments=#{comments}, image=#{image} where logno=#{logno} 
+	</update>
+	<delete id="DeleteData" parameterType="int">
+		delete from exerciselog where logno = #{logno}
+	</delete>
+</mapper>

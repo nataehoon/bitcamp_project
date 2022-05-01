@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings> 
+		<setting name="jdbcTypeForNull" value="NULL" /> 
+	</settings>
+	
+	<typeAliases>
+		<typeAlias alias="MyMember" type="bean.Member"/>
+		<typeAlias alias="MyExerciseLog" type="bean.Log"/>
+		<typeAlias alias="MyHealthChart" type="bean.Health"/>
+		<typeAlias alias="MyPosture" type="bean.Posture"/>
+		<typeAlias alias="MyBoard" type="bean.Board"/>
+		<typeAlias alias="MyFitness" type="bean.Fitness"/>
+		<typeAlias alias="MyHospital" type="bean.Hospital"/>
+		<typeAlias alias="MyDiet" type="bean.Diet"/>
+		<typeAlias alias="MyNotice" type="bean.Noticeboard"/>
+		<typeAlias alias="MyComment" type="bean.Comment"/>
+		<typeAlias alias="MyCombo01" type="bean.Combo01"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mybatis/mapadvice.xml" />
+		<mapper resource="mybatis/mapadmin.xml" />
+		<mapper resource="mybatis/mapview.xml" />
+		<mapper resource="mybatis/mapdiet.xml" />
+		<mapper resource="mybatis/mapmember.xml" />
+		<mapper resource="mybatis/maplog.xml" />
+		<mapper resource="mybatis/maphealth.xml" />
+		<mapper resource="mybatis/mapposture.xml" />
+		<mapper resource="mybatis/mapboard.xml" />
+		<mapper resource="mybatis/mapnotice.xml" />
+		<mapper resource="mybatis/mapfit.xml" />
+		<mapper resource="mybatis/maphospital.xml" />
+	</mappers>
+</configuration>
