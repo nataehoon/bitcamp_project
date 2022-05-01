@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="point" class="shape.circle.Point">
+		<property name="xpos">
+			<value>3.0</value>
+		</property>
+		<property name="ypos">
+			<value>4.0</value>
+		</property>
+	</bean>
+	<bean id="circle" class="shape.circle.Circle">
+		<constructor-arg>
+			<value>10</value>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="point"/>
+		</constructor-arg>
+	</bean>
+</beans>

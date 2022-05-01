@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="computer" class="mycomputer.Computer">
+		<property name="cpu">
+			<value>인텔 CPU</value>
+		</property>
+		<property name="hdd">
+			<value>삼성 하드</value>
+		</property>
+		<property name="mainboard">
+			<value>1g 메인 보드</value>
+		</property>
+	</bean>
+	<bean id="programmer" class="mycomputer.Programmer">
+		<constructor-arg>
+			<value>김철수</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>역삼동</value>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="computer"/>
+		</constructor-arg>
+	</bean>
+</beans>

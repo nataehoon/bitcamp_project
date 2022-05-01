@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MyAlbum">
+	<select id="getTotalCount" resultType="Integer"> 
+		select count(*) from albums
+		<if test="what == 'albumname'">
+			where albumname like #{keyword}
+		</if>		
+		<if test="what == 'song'">
+			where song like #{keyword}
+		</if>	
+	</select>
+	
+	<sql id="myselect">
+		select id, albumname, song, lyricist, songwriter, 
+		transcription, to_char(writerdate, 'yyyy/mm/dd') as writerdate, image,
+		genre, mediatype, emailagree
+		from albums
+	</sql> 
+
+	<select id="getAlbumList" resultType="MyAlbum">
+		<include refid="myselect" />
+		<if test="what == 'albumname'">
+			where albumname like #{keyword}
+		</if>		
+		<if test="what == 'song'">
+			where song like #{keyword}
+		</if>	
+		order by id desc
+	</select>	
+	
+	<insert id="insert" parameterType="MyAlbum">
+		insert into albums ( id,
+		albumname, song, lyricist, songwriter, transcription, writerdate, image, genre, mediatype, emailagree)
+		values ( seqalbum.nextVal, #{albumname}, #{song}, #{lyricist},
+		#{songwriter}, #{transcription}, #{writerdate}, #{image}, #{genre}, #{mediatype}, #{emailagree} )
+	</insert>	
+	
+	<select id="getAlbumById" parameterType="Integer" resultType="MyAlbum">
+		<include refid="myselect" />
+		 where id = #{id}
+	</select>
+	
+	<update id="update" parameterType="MyAlbum">
+		update albums set
+		albumname = #{albumname}, song = #{song},
+		lyricist = #{lyricist}, songwriter = #{songwriter},
+		transcription = #{transcription}, writerdate = #{writerdate}, image = #{image},
+		genre = #{genre}, mediatype = #{mediatype}, emailagree = #{emailagree}		
+		where id = #{id}
+	</update>		
+	
+	<delete id="delete" parameterType="Integer">
+		delete from albums where id = #{id}
+	</delete>	
+	
+	<select id="GetList" parameterType="String" resultType="MyCheckBean">
+		select *
+		from checkes
+		where module = #{module} and field = #{field}
+		order by mykey asc
+	</select>	
+</mapper>
+
+

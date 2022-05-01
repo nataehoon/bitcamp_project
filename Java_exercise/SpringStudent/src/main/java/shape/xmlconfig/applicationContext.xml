@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="aaa" class="shape.xmlconfig.CircleDao"/>
+	<bean id="bbb" class="shape.xmlconfig.RectangleDao"/>
+
+	<bean id="circle" class="shape.xmlconfig.Circle">
+		<property name="shapeDao">
+			<ref bean="aaa"/>
+		</property>
+	</bean>
+	<bean id="rectangle" class="shape.xmlconfig.Rectangle">
+		<property name="shapeDao">
+			<ref bean="bbb"/>
+		</property>
+	</bean>
+</beans>
