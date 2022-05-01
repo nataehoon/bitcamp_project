@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="MapperAdmin">
+	<sql id="myselect">
+		 select * from(select distinct p.id, m.name, m.nickname, count(*) over() as totalcount
+		from members m inner join
+	</sql>
+	<select id="SelectPoData" resultType="MyPosture">
+		select * from posture where id = #{id}
+	</select>
+	<select id="SelectHealthData" resultType="MyHealthChart">
+		select * from healthchart where id = #{id}
+	</select>
+	<select id="SelectDietData" resultType="MyDiet">
+		select * from diet where id = #{id}
+	</select>
+	<select id="SelectLogData" resultType="MyExerciseLog">
+		select * from exerciselog where id = #{id}
+	</select>
+	<select id="SelectPoMeData" resultType="MyCombo01">
+		<include refid="myselect"/>
+		posture p
+		on p.id = m.id)
+		<if test="mode == 'id'">
+			where id like #{keyword}
+		</if>
+		<if test="mode == 'name'">
+			where name like #{keyword}
+		</if>
+		<if test="mode == 'nickname'">
+			where name like #{keyword}
+		</if>
+	</select>
+	<select id="SelectHealthMeData" resultType="MyCombo01">
+		<include refid="myselect"/>
+		healthchart p
+		on p.id = m.id)
+		<if test="mode == 'id'">
+			where id like #{keyword}
+		</if>
+		<if test="mode == 'name'">
+			where name like #{keyword}
+		</if>
+		<if test="mode == 'nickname'">
+			where name like #{keyword}
+		</if>
+	</select>
+	<select id="SelectDietMeData" resultType="MyCombo01">
+		<include refid="myselect"/>
+		diet p
+		on p.id = m.id)
+		<if test="mode == 'id'">
+			where id like #{keyword}
+		</if>
+		<if test="mode == 'name'">
+			where name like #{keyword}
+		</if>
+		<if test="mode == 'nickname'">
+			where name like #{keyword}
+		</if>
+	</select>
+	<select id="SelectLogMeData" resultType="MyCombo01">
+		<include refid="myselect"/>
+		exerciselog p
+		on p.id = m.id)
+		<if test="mode == 'id'">
+			where id like #{keyword}
+		</if>
+		<if test="mode == 'name'">
+			where name like #{keyword}
+		</if>
+		<if test="mode == 'nickname'">
+			where name like #{keyword}
+		</if>
+	</select>
+	<select id="SelectTotalPoCount" resultType="int">
+		select count(*) from (select distinct id from posture)
+	</select>
+	<select id="SelectTotalHealthCount" resultType="int">
+		select count(*) from (select distinct id from healthchart)
+	</select>
+	<select id="SelectTotalDietCount" resultType="int">
+		select count(*) from (select distinct id from diet)
+	</select>
+	<select id="SelectTotalLogCount" resultType="int">
+		select count(*) from (select distinct id from exerciselog)
+	</select>
+	<select id="SelectTotalCountByPoPk" resultType="int">
+		select * from posture where id = #{id}
+	</select>
+	<select id="SelectTotalCountByHealthPk" resultType="int">
+		select * from healthchart where id = #{id}
+	</select>
+	<select id="SelectTotalCountByDietPk" resultType="int">
+		select * from diet where id = #{id}
+	</select>
+	<select id="SelectTotalCountByLogPk" resultType="int">
+		select * from exerciselog where id = #{id}
+	</select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="MapperDiet">
+	<sql id="myselect">
+		select * from diet
+	</sql>
+	<select id="SelectDataList" resultType="MyDiet">
+		<include refid="myselect"/>
+		where id = #{id} order by regdate
+	</select>
+	<insert id="InsertData" parameterType="MyDiet">
+		insert into diet values(exerciselog_seq.nextval, #{id}, #{regdate}, #{image}, #{dietlist}, #{comments}, null)
+	</insert>
+	<select id="SelectByPk" resultType="MyDiet">
+		<include refid="myselect"/>
+		where dietno = #{dietno}
+	</select>
+	<update id="UpdateData" parameterType="MyDiet">
+		update diet set regdate=#{regdate}, dietlist=#{dietlist}, comments=#{comments}, image=#{image} where dietno=#{dietno} 
+	</update>
+	<delete id="DeleteData" parameterType="int">
+		delete from diet where dietno = #{dietno}
+	</delete>
+</mapper>

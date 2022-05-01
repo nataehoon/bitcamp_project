@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="MapperBoard">
+	<sql id="myselect">
+		select * from board
+	</sql>
+	<select id="SelectTotalCount" resultType="int">
+		select count(*) from board where category = #{category}
+		<if test="mode == 'id'">
+			and id like #{keyword}
+		</if>
+		<if test="mode == 'title'">
+			and title like #{keyword}
+		</if>
+		<if test="mode == 'content'">
+			and content like #{keyword}
+		</if>
+		order by bono desc
+	</select>
+	<select id="SelectDataList" resultType="MyBoard" parameterType="String">
+		select * from (
+		select rownum as num, a.* from (
+		select b.* from board b where category = #{category} order by regdate) a)
+		<if test="mode == 'id'">
+			where id like #{keyword}
+		</if>
+		<if test="mode == 'title'">
+			where title like #{keyword}
+		</if>
+		<if test="mode == 'content'">
+			where content like #{keyword}
+		</if>
+		order by num desc
+	</select>
+	<insert id="InsertData" parameterType="MyBoard">
+		insert into board(bono, id, pono, logno, healthno, category, title, content, image, regdate, readhit, recommend, remark, nickname)
+		values(board_seq.nextval, #{id}, #{pono}, #{logno}, #{healthno}, #{category}, #{title}, #{content}, #{image}, sysdate, 0, 0, null, #{nickname})
+	</insert>
+	<select id="SelectByPk" resultType="MyBoard">
+		<include refid="myselect"/>
+		where bono = #{bono}
+	</select>
+	<update id="UpdateData" parameterType="MyBoard">
+		update board set pono=#{pono}, logno=#{logno}, healthno=#{healthno}, category=#{category}, title=#{title}, content=#{content}, image=#{image}, readhit=#{readhit}, recommend=#{recommend} where bono = #{bono}
+	</update>
+	<delete id="DeleteData" parameterType="int">
+		delete from board where bono = #{bono}
+	</delete>
+	<insert id="InsertCoData" parameterType="MyComment">
+		insert into comments(cono, bono, id, content, id2, regdate, groupno, depth, remark)
+		values(comment_seq.nextval, #{bono}, #{id}, #{content}, #{id2}, sysdate, #{groupno}, #{depth}, null)
+	</insert>
+	<select id="SelectCoData" resultType="MyComment">
+		select * from comments where bono = #{bono}
+	</select>
+	<select id="SelectTotalCoCount" resultType="int">
+		select count(*) from comments where bono = #{bono}
+	</select>
+	<select id="SelectByCo" resultType="MyComment">
+		select * from comments where cono = #{cono}
+	</select>
+	<delete id="DeleteCo" parameterType="int">
+		delete from comments where cono = #{cono}
+	</delete>
+	<update id="UpdateCoData" parameterType="MyComment">
+		update comments set content = #{content} where cono = #{cono}
+	</update>
+	<select id="SelectBoData" resultType="MyBoard">
+		select * from (
+		select rownum as n, a.* from(
+		select * from board order by bono desc) a) where n between 1 and 5
+	</select>
+	<select id="SelectNoData" resultType="MyNotice">
+		select * from (
+		select rownum as n, a.* from(
+		select * from noticeboard order by notino desc) a) where n between 1 and 5
+	</select>
+	<update id="UpdateReadhit" parameterType="int">
+		update board set readhit=readhit+1 where bono = #{bono}
+	</update>
+	<update id="UpdateRecommend" parameterType="int">
+		update board set recommend=recommend+1 where bono = #{bono}
+	</update>
+</mapper>
